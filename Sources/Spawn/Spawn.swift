@@ -9,7 +9,7 @@ public enum SpawnError: Error {
     case CouldNotSpawn
 }
 
-public typealias OutputClosure = (String) -> Void
+public typealias OutputClosure = (String?) -> Void
 
 public final class Spawn {
 
@@ -70,6 +70,7 @@ public final class Spawn {
             close(outputPipe[1])
             let bufferSize: size_t = 1024 * 8
             let dynamicBuffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
+            threadInfo.output?(nil)
             while true {
                 let amtRead = read(outputPipe[0], dynamicBuffer, bufferSize)
                 if amtRead <= 0 { break }
